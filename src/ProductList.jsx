@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 import "./ProductList.css";
+import { useSelector } from "react-redux";
 import CartItem from "./CartItem";
 import { addItem } from "./CartSlice";
+import { useDispatch } from "react-redux";
 
 function ProductList() {
+  const cartItems = useSelector((state) => state.cart);
   const [showCart, setShowCart] = useState(false);
   const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
   const [addedToCart, setAddedToCart] = useState({});
+  const dispatch = useDispatch();
   const handleAddToCart = (product) => {
     dispatch(addItem(product));
     setAddedToCart((prevState) => ({
-       ...prevState,
-       [product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
-     }));
+      ...prevState,
+      [product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
+    }));
   };
   const plantsArray = [
     {
@@ -337,6 +341,16 @@ function ProductList() {
                     stroke-width="2"
                     id="mainIconPathAttribute"
                   ></path>
+                  <text
+                    x="50%"
+                    y="50%"
+                    textAnchor="middle"
+                    fill="#faf9f9"
+                    fontSize="70"
+                    dy=".3em" // 用來微調文字垂直對齊
+                  >
+                    {cartItems.items.length}
+                  </text>
                 </svg>
               </h1>
             </a>
