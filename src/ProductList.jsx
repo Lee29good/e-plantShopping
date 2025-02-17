@@ -9,14 +9,9 @@ function ProductList() {
   const cartItems = useSelector((state) => state.cart);
   const [showCart, setShowCart] = useState(false);
   const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
-  const [addedToCart, setAddedToCart] = useState({});
   const dispatch = useDispatch();
   const handleAddToCart = (product) => {
     dispatch(addItem(product));
-    setAddedToCart((prevState) => ({
-      ...prevState,
-      [product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
-    }));
   };
   const plantsArray = [
     {
@@ -294,6 +289,7 @@ function ProductList() {
     e.preventDefault();
     setShowCart(false);
   };
+
   return (
     <div>
       <div className="navbar" style={styleObj}>
@@ -349,7 +345,7 @@ function ProductList() {
                     fontSize="70"
                     dy=".3em" // 用來微調文字垂直對齊
                   >
-                    {cartItems.items.length}
+                    {cartItems.amount}
                   </text>
                 </svg>
               </h1>
@@ -374,11 +370,18 @@ function ProductList() {
                     />
                     <div className="product-title">{plant.name}</div>
                     {/*Similarly like the above plant.name show other details like description and cost*/}
+                    <div className="product-price">{plant.cost}</div>
+                    <p>{plant.description}</p>
                     <button
                       className="product-button"
                       onClick={() => handleAddToCart(plant)}
+                      disabled={cartItems.items.some(item => item.name === plant.name)} // 如果已經加入，禁用按鈕
+                      style={{
+                        backgroundColor: cartItems.items.some(item => item.name === plant.name) ? "gray" : "", // 按鈕變成灰色
+                      }}
                     >
-                      Add to Cart
+                      {cartItems.items.some(item => item.name === plant.name) ? "Added to Cart" : "Add to Cart"}{" "}
+                      {/* 按鈕文字 */}
                     </button>
                   </div>
                 ))}

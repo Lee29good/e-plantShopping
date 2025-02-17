@@ -212,7 +212,7 @@ body {
   }
   
   .product-button:hover {
-    background-color: #45a049;
+    background-color: red;
   }
   
   .product-button.added-to-cart {
